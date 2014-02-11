@@ -5,4 +5,10 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <!--tag bird frag-->
+    <string name="tag_status_default">Tap to identify a bird</string>
+    <string name="tag_status_activated">Listening...</string>
+    <string name="tag_status_failed">Failed to recognize</string>
+    <string name="content_desc">image</string>
+
 </resources>

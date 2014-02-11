@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.droid.ndege.ui.frags.TagBirdFrag"
+    android:background="#C2C2C2">
+
+    <TextView
+        android:id="@+id/tag_status"
+        android:text="@string/tag_status_default"
+        android:textSize="30sp"
+        android:textColor="#2480A2"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tap_section"
+        android:layout_marginBottom="10dp"/>
+
+    <LinearLayout
+        android:id="@+id/tap_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/tap_img"
+            android:src="@drawable/bird_brown_cute"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:maxWidth="200dp"
+            android:maxHeight="200dp"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/content_desc"
+            android:layout_gravity="center"
+            android:focusable="true"
+            android:clickable="true"
+            android:background="@drawable/imageview_style"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
