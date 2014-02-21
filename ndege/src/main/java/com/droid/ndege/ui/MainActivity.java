@@ -1,36 +1,40 @@
 package com.droid.ndege.ui;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
 
 import com.droid.ndege.R;
 import com.droid.ndege.adapters.TabsPagerAdapter;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockActivity;
-
-import roboguice.activity.RoboActivity;
+import com.droid.ndege.constants.Constants;
+import com.droid.ndege.db.DBAdapter;
+import com.droid.ndege.utils.FirstRunInit;
 
 public class MainActivity extends ActionBarActivity {
+
+    private static final String LOG_TAG = "MainActivity";
 
     private ViewPager viewPager;
     private TabsPagerAdapter tabsPagerAdapter;
     private ActionBar actionBar;
-    private String[] TabsTitle = {"Tag", "My Tags"};
 
+    public DBAdapter dbAdapter;
+    private FirstRunInit firstRunInit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //check firstrun
+        checkFirstRun();
 
         //init pagers
         viewPager = (ViewPager)findViewById(R.id.pager);
@@ -41,7 +45,7 @@ public class MainActivity extends ActionBarActivity {
         actionBar.setHomeButtonEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        for(String tab: TabsTitle)
+        for(String tab: Constants.TABS_TITLE)
             actionBar.addTab(actionBar.newTab().setText(tab).setTabListener(tabListener));
 
         viewPager.setOnPageChangeListener(pageChangeListener);
@@ -100,6 +104,23 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void checkFirstRun(){
+        SharedPreferences firstRunPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean firstRun = firstRunPrefs.getBoolean("FirstRun", true);
+
+        if(firstRun){
+            //copy db
+            Log.e(LOG_TAG, "First Run! initializing resources...");
+            firstRunInit = new FirstRunInit(this);
+            firstRunInit.copyDBFile();
+
+            firstRunPrefs.edit().putBoolean("FirstRun", false).commit();
+        }else{
+            Log.e(LOG_TAG, "First Run! all assets GREEN...");
+
+        }
     }
 
 }

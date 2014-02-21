@@ -11,4 +11,8 @@
     <string name="tag_status_failed">Failed to recognize</string>
     <string name="content_desc">image</string>
 
+    <!--view tags-->
+    <string name="tag_english_name">Sokoke Pipit</string>
+    <string name="tag_genus_spec_name">Anthus sokokensis</string>
+
 </resources>

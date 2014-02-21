@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.droid.ndege.constants.Constants;
 import com.droid.ndege.ui.frags.TagBirdFrag;
 import com.droid.ndege.ui.frags.ViewTagsFrag;
 
@@ -33,6 +34,6 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         //no of tabs
-        return 2;
+        return Constants.TABS_TITLE.length;
     }
 }
