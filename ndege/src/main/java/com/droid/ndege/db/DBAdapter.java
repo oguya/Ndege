@@ -3,6 +3,8 @@ package com.droid.ndege.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import com.droid.ndege.constants.Constants;
 
@@ -25,6 +27,13 @@ public class DBAdapter {
 
     public DBAdapter open(){
         db = dbHelper.getWritableDatabase();
+
+        //force foreign key checks
+        try{
+            db.execSQL(Constants.FORCE_FOREIGN_KEY_CHECKS);
+        }catch (NullPointerException npe){
+            Log.e(LOG_TAG, "foreign key checks:: " + npe.getMessage());
+        }
         return this;
     }
 
