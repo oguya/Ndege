@@ -22,4 +22,6 @@
     <color name="btn_background_pressed">#ffb0ff83</color>
     <color name="btn_stroke_pressed">#ffff0000</color>
 
+    <!-- extras divider-->
+    <color name="extras_line_divider">#ffcbcbcb</color>
 </resources>

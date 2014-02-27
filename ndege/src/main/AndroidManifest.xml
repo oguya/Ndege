@@ -27,7 +27,14 @@
 
         <!-- view tag activity-->
         <activity android:name=".ui.TagDetailsActivity"
-            android:label="@string/title_tagdetail_activity"/>
+            android:label="@string/title_tagdetail_activity"
+            android:parentActivityName=".ui.MainActivity">
+
+            <!-- v 4.1 support-->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.droid.ndege.ui.MainActivity" />
+        </activity>
 
     </application>
 
