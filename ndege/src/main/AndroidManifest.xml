@@ -24,6 +24,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- view tag activity-->
+        <activity android:name=".ui.TagDetailsActivity"
+            android:label="@string/title_tagdetail_activity"/>
+
     </application>
 
 </manifest>

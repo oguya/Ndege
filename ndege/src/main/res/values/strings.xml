@@ -20,5 +20,7 @@
     <string name="tag_english_name">Sokoke Pipit</string>
     <string name="tag_genus_spec_name">Anthus sokokensis</string>
 
+    <!-- tag details activity-->
+    <string name="title_tagdetail_activity">Tag Details</string>
 
 </resources>
