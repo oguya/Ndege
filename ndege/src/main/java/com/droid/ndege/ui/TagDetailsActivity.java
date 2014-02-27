@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.droid.ndege.R;
 
@@ -51,10 +52,22 @@ public class TagDetailsActivity extends ActionBarActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+                Toast.makeText(this, "settings...comming soon", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.action_share:
+                Toast.makeText(this, "share...comming soon", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.action_delete:
+                Toast.makeText(this, "delete...comming soon", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
         }
+
         return super.onOptionsItemSelected(item);
     }
 

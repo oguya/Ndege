@@ -8,6 +8,7 @@
     <!--default vals-->
     <string name="empty_list">Hold up! Seems like you haved tagged any bird yet</string>
     <string name="share">Share</string>
+    <string name="delete">Delete</string>
 
 
     <!--tag bird frag-->
