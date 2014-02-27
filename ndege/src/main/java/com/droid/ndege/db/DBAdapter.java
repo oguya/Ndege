@@ -50,7 +50,7 @@ public class DBAdapter {
     //get all tags
     public ArrayList<Tag> getTagList(){
         ArrayList<Tag> tagList = new ArrayList<Tag>();
-        String[] cols = {Tag.TAG_ID, Tag.ENGLISH_NAME, Tag.GENERIC_NAME, Tag.SPECIFIC_NAME};
+        String[] cols = {Tag.TAG_ID, Tag.ENGLISH_NAME, Tag.GENERIC_NAME, Tag.SPECIFIC_NAME, Tag.TAG_DATE};
         Cursor cursor;
 
         try{
@@ -68,6 +68,7 @@ public class DBAdapter {
                 tag.setEnglishName(cursor.getString(cursor.getColumnIndex(Tag.ENGLISH_NAME)));
                 tag.setGenericName(cursor.getString(cursor.getColumnIndex(Tag.GENERIC_NAME)));
                 tag.setSpecificName(cursor.getString(cursor.getColumnIndex(Tag.SPECIFIC_NAME)));
+                tag.setTagDate(cursor.getString(cursor.getColumnIndex(Tag.TAG_DATE)));
 
                 tagList.add(tag);
             }while (cursor.moveToNext());
@@ -82,7 +83,7 @@ public class DBAdapter {
         Cursor cursor;
         String[] cols = {Tag.TAG_ID, Tag.BIRD_ID, Tag.ENGLISH_NAME, Tag.GENERIC_NAME, Tag.SPECIFIC_NAME,
                 Tag.RECORDER, Tag.LOCATION, Tag.COUNTRY, Tag.LAT, Tag.LNG, Tag.XENOCANTOURL,
-                Tag.SOUND_TYPE, Tag.SOUND_URL };
+                Tag.SOUND_TYPE, Tag.SOUND_URL, Tag.THUMBNAIL_URL, Tag.TAG_DATE, Tag.TAG_LOCATION };
 
         try{
             cursor = db.query(Constants.TBL_TAGS, cols, Tag.TAG_ID+" =? ", new String[]{String.valueOf(tagID)},
@@ -108,6 +109,9 @@ public class DBAdapter {
             tag.setXenoCantoURL(cursor.getString(cursor.getColumnIndex(Tag.XENOCANTOURL)));
             tag.setSoundType(cursor.getString(cursor.getColumnIndex(Tag.SOUND_TYPE)));
             tag.setSoundURL(cursor.getString(cursor.getColumnIndex(Tag.SOUND_URL)));
+            tag.setThumbnailURL(cursor.getString(cursor.getColumnIndex(Tag.THUMBNAIL_URL)));
+            tag.setTagDate(cursor.getString(cursor.getColumnIndex(Tag.TAG_DATE)));
+            tag.setTagLocation(cursor.getString(cursor.getColumnIndex(Tag.TAG_LOCATION)));
 
             tagList.add(tag);
         }
@@ -144,6 +148,8 @@ public class DBAdapter {
         cursor.close();
         return imageList;
     }
+
+
 
 
     public static class DBHelper extends SQLiteOpenHelper {

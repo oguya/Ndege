@@ -12,7 +12,12 @@ import android.widget.TextView;
 import com.droid.ndege.R;
 import com.droid.ndege.model.Tag;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Created by james on 27/02/14.
@@ -26,6 +31,7 @@ public class TagListAdapter extends ArrayAdapter<Tag> {
         ImageView birdImg;
         TextView englishName_TXT;
         TextView genSpecName_TXT;
+        TextView tagDate_TXT;
     }
 
     public TagListAdapter(Activity context, ArrayList<Tag> tagList){
@@ -46,7 +52,7 @@ public class TagListAdapter extends ArrayAdapter<Tag> {
             viewHolder.birdImg = (ImageView)rowView.findViewById(R.id.bird_img);
             viewHolder.englishName_TXT = (TextView)rowView.findViewById(R.id.taglist_english_name);
             viewHolder.genSpecName_TXT = (TextView)rowView.findViewById(R.id.taglist_genus_spec_name);
-
+            viewHolder.tagDate_TXT = (TextView)rowView.findViewById(R.id.taglist_tagDate);
             rowView.setTag(viewHolder);
         }
 
@@ -57,13 +63,40 @@ public class TagListAdapter extends ArrayAdapter<Tag> {
         String englishName = tagList.get(position).getEnglishName();
         String genericName = tagList.get(position).getGenericName();
         String specificName = tagList.get(position).getSpecificName();
+        String tagDate = tagList.get(position).getTagDate();
 
         viewHolder.birdImg.setImageResource(R.drawable.bird_brown_cute);
         viewHolder.englishName_TXT.setText(englishName);
         viewHolder.genSpecName_TXT.setText(genericName +" "+specificName);
+        viewHolder.tagDate_TXT.setText(formatDate(tagDate));
 
         //TODO add list scroll animation
 
         return rowView;
     }
+
+    //Thur 27, Feb
+    public String formatDate(String strDate){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd, MMM");
+        SimpleDateFormat tagDateFormat = new SimpleDateFormat("yyyy-MM-dd H:m:s");
+        Date now = new Date();
+        Date tagDate;
+        String tagDateStr = "";
+        try {
+            tagDate = tagDateFormat.parse(strDate);
+
+            if(tagDate.getYear() != now.getYear()){
+                dateFormat = new SimpleDateFormat("EEE dd, MMM yyyy");
+                tagDateStr = dateFormat.format(tagDate);
+            }else{
+                tagDateStr = dateFormat.format(tagDate);
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            tagDateStr = dateFormat.format(now);
+        }
+        return tagDateStr;
+    }
+
 }

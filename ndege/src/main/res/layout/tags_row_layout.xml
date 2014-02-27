@@ -34,7 +34,8 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_weight=".5"
             android:layout_marginLeft="5dp"
@@ -62,22 +63,33 @@
                 android:id="@+id/taglist_english_name"
                 android:text="@string/tag_english_name"
                 android:textSize="25sp"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:gravity="start|fill_horizontal" />
+                android:layout_gravity="start"
+                android:gravity="start|left"/>
 
             <TextView
                 android:id="@+id/taglist_genus_spec_name"
                 android:textStyle="italic"
                 android:textSize="20sp"
+                android:layout_weight=".5"
                 android:text="@string/tag_genus_spec_name"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="start|fill_horizontal"
-                android:layout_alignParentBottom="true" />
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center|left"/>
 
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/taglist_tagDate"
+                android:text="@string/taglist_tag_date"
+                android:gravity="bottom"
+                android:textSize="18sp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/tag_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

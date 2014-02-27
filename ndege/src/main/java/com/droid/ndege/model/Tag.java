@@ -18,7 +18,9 @@ public class Tag {
     public static final String XENOCANTOURL = "xenoCantoURL";
     public static final String SOUND_TYPE = "soundType";
     public static final String SOUND_URL = "soundURL";
-
+    public static final String THUMBNAIL_URL = "thumbnailURL";
+    public static final String TAG_DATE = "tagDate";
+    public static final String TAG_LOCATION = "tagLocation";
 
     private int tagID;
     private int birdID;
@@ -34,12 +36,15 @@ public class Tag {
     private String soundType;
     private String soundURL;
     private String thumbnailURL;
+    private String tagDate;
+    private String tagLocation;
 
     public Tag(){}
 
     public Tag(int tagID, int birdID, String englishName, String genericName, String thumbnailURL,
                String specificName, String recorder, String location, String country,
-               String lat, String lng, String xenoCantoURL, String soundType, String soundURL){
+               String lat, String lng, String xenoCantoURL, String soundType, String soundURL,
+               String tagDate, String tagLocation ){
 
         this.tagID = tagID;
         this.birdID = birdID;
@@ -55,6 +60,8 @@ public class Tag {
         this.soundType = soundType;
         this.soundURL = soundURL;
         this.thumbnailURL = thumbnailURL;
+        this.tagDate = tagDate;
+        this.tagLocation = tagLocation;
     }
 
     public int getTagID(){
@@ -168,5 +175,22 @@ public class Tag {
     public void setThumbnailURL(String thumbnailURL){
         this.thumbnailURL = thumbnailURL;
     }
+
+    public String getTagDate(){
+        return this.tagDate;
+    }
+
+    public void setTagDate(String tagDate){
+        this.tagDate = tagDate;
+    }
+
+    public String getTagLocation(){
+        return this.tagLocation;
+    }
+
+    public void setTagLocation(String tagLocation){
+        this.tagLocation = tagLocation;
+    }
+
 }
 

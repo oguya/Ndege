@@ -16,6 +16,7 @@
     <color name="extras_list_item">#4D4D4D</color>
     <color name="search_list_background">#ffffffff</color>
     <color name="search_list_background_pressed">#ffb0ff83</color>
+    <color name="tag_date">#ff858585</color>
 
     <!--button colors-->
     <color name="btn_background">#ffb0ff83</color>
