@@ -22,5 +22,14 @@
 
     <!-- tag details activity-->
     <string name="title_tagdetail_activity">Tag Details</string>
+    <string name="tagdetail_scientificname_lbl">Scientific Name:</string>
+    <string name="tagdetail_recorder_lbl">Recorded by:</string>
+    <string name="tagdetail_recorder">Hans Matheve</string>
+    <string name="tagdetail_country_lbl">Country Recorded in:</string>
+    <string name="tagdetail_country">Kenya</string>
+    <string name="tagdetail_location_lbl">Location:</string>
+    <string name="tagdetail_location">Kakamega Forest</string>
+    <string name="tagdetail_soundtype_lbl">Sound type:</string>
+    <string name="tagdetail_soundtype">Call</string>
 
 </resources>

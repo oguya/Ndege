@@ -1,6 +1,240 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    android:background="#ffdbdbdb">
+
+    <ScrollView
+        android:id="@+id/scroll_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/section_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/bird_img_thumbnail"
+                    android:src="@drawable/sokoke_pipit"
+                    android:contentDescription="@string/content_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:minHeight="250dp"
+                    android:minWidth="250dp"
+                    android:maxHeight="250dp"
+                    android:maxWidth="250dp"
+                    android:layout_margin="10dp"
+                    android:layout_alignParentTop="true" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:alpha=".6"
+                    android:background="#ffadd8fc"
+                    android:layout_marginLeft="-10dp"
+                    android:layout_marginRight="-20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_alignBottom="@id/bird_img_thumbnail"
+                    android:layout_alignRight="@id/bird_img_thumbnail"
+                    android:layout_alignEnd="@id/bird_img_thumbnail">
+
+                    <TextView
+                        android:id="@+id/bird_engName"
+                        android:text="@string/tag_english_name"
+                        android:textColor="@android:color/black"
+                        android:layout_marginLeft="20dp"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/section_extras"
+                android:layout_margin="10dp"
+                android:layout_below="@id/section_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/section_bg">
+
+                <!-- generic-specific name section -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="@string/tagdetail_scientificname_lbl"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tag_genspecName_TXT"
+                        android:text="@string/tag_genus_spec_name"
+                        android:textStyle="italic"
+                        android:textSize="20sp"
+                        android:gravity="start"
+                        android:layout_gravity="fill"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <!-- recorder section -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp">
+
+                    <TextView
+                        android:text="@string/tagdetail_recorder_lbl"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tagdetail_recorder_TXT"
+                        android:text="@string/tagdetail_recorder"
+                        android:textStyle="italic"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="start"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <!-- country section -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp">
+
+                    <TextView
+                        android:text="@string/tagdetail_country_lbl"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tagdetail_country_TXT"
+                        android:text="@string/tagdetail_country"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="start"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+
+                <!--location section -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp">
+
+                    <TextView
+                        android:text="@string/tagdetail_location_lbl"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tagdetail_location_TXT"
+                        android:text="@string/tagdetail_location"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="start"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+
+                <!-- sound type section -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp">
+
+                    <TextView
+                        android:text="@string/tagdetail_soundtype_lbl"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tagdetail_soundtype_TXT"
+                        android:text="@string/tagdetail_soundtype"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="start"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- footer section -->
+            <LinearLayout
+                android:id="@+id/footer"
+                android:layout_below="@id/section_extras"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true">
+
+                <TextView
+                    android:id="@+id/tagdetail_tagdate"
+                    android:text="Tagged On: Thursday 27, Feb 2014"
+                    android:textSize="15sp"
+                    android:fontFamily="monospace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tagdetail_tagloc"
+                    android:text="Nairobi, Kenya"
+                    android:textSize="15sp"
+                    android:fontFamily="monospace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+
+
 
 </RelativeLayout>

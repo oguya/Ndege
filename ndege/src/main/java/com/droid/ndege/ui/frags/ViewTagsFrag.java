@@ -1,6 +1,7 @@
 package com.droid.ndege.ui.frags;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import com.droid.ndege.adapters.TagListAdapter;
 import com.droid.ndege.db.DBAdapter;
 import com.droid.ndege.model.BirdImage;
 import com.droid.ndege.model.Tag;
+import com.droid.ndege.ui.TagDetailsActivity;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -85,6 +87,14 @@ public class ViewTagsFrag extends Fragment {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Toast.makeText(getActivity(), "item click: ", Toast.LENGTH_SHORT).show();
+
+            //store tagID and birdID in bundle..start tagdetails activity
+            Bundle bundle = new Bundle();
+//            bundle.putInt();
+
+            Intent intent = new Intent(context, TagDetailsActivity.class);
+            startActivity(intent);
+
         }
     };
 
