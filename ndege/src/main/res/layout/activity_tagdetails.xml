@@ -30,8 +30,8 @@
                     android:adjustViewBounds="true"
                     android:minHeight="250dp"
                     android:minWidth="250dp"
-                    android:maxHeight="250dp"
-                    android:maxWidth="250dp"
+                    android:maxHeight="300dp"
+                    android:maxWidth="300dp"
                     android:layout_margin="10dp"
                     android:layout_alignParentTop="true" />
 
@@ -219,6 +219,31 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@color/extras_line_divider"/>
+
+                <!--xeno canto url section -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
+
+                <Button
+                    android:id="@+id/tagdetail_MoreInfo_BTN"
+                    android:text="@string/tagdetail_xenoCanto_lbl"
+                    android:onClick="handleClickEvents"
+                    android:layout_gravity="center|center_horizontal"
+                    android:background="@drawable/info_bg"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
 
             </LinearLayout>
 

@@ -33,10 +33,11 @@ public class Tag {
     private String xenoCantoURL;
     private String soundType;
     private String soundURL;
+    private String thumbnailURL;
 
     public Tag(){}
 
-    public Tag(int tagID, int birdID, String englishName, String genericName,
+    public Tag(int tagID, int birdID, String englishName, String genericName, String thumbnailURL,
                String specificName, String recorder, String location, String country,
                String lat, String lng, String xenoCantoURL, String soundType, String soundURL){
 
@@ -53,6 +54,7 @@ public class Tag {
         this.xenoCantoURL = xenoCantoURL;
         this.soundType = soundType;
         this.soundURL = soundURL;
+        this.thumbnailURL = thumbnailURL;
     }
 
     public int getTagID(){
@@ -159,5 +161,12 @@ public class Tag {
         this.soundURL = soundURL;
     }
 
+    public String getThumbnailURL(){
+        return this.thumbnailURL;
+    }
+
+    public void setThumbnailURL(String thumbnailURL){
+        this.thumbnailURL = thumbnailURL;
+    }
 }
 

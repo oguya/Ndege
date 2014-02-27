@@ -32,5 +32,6 @@
     <string name="tagdetail_location">Kakamega Forest</string>
     <string name="tagdetail_soundtype_lbl">Sound type:</string>
     <string name="tagdetail_soundtype">Call</string>
+    <string name="tagdetail_xenoCanto_lbl">More Info</string>
 
 </resources>
