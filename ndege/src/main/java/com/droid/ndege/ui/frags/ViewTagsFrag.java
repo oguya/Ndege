@@ -6,8 +6,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.droid.ndege.R;
+import com.droid.ndege.adapters.TagListAdapter;
+import com.droid.ndege.db.DBAdapter;
+import com.droid.ndege.model.BirdImage;
+import com.droid.ndege.model.Tag;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import roboguice.fragment.RoboFragment;
 
@@ -16,11 +27,22 @@ import roboguice.fragment.RoboFragment;
  */
 public class ViewTagsFrag extends Fragment {
 
+    private final static String LOG_TAG = "ViewTagsFrag";
+    private Activity context;
+
+    private ListView listView;
+    private TextView noTags_TXT;
+    private DBAdapter dbAdapter;
+    private ArrayList<Tag> tagList;
+    private ArrayList<BirdImage> imageList;
+
     public ViewTagsFrag(){}
 
     @Override
     public void onAttach(Activity activity){
         super.onAttach(activity);
+
+        this.context = activity;
     }
 
     @Override
@@ -28,7 +50,8 @@ public class ViewTagsFrag extends Fragment {
         View rootView = inflater.inflate(R.layout.frag_view_tags, container, false);
 
         //init ui here
-
+        listView = (ListView)rootView.findViewById(R.id.tagList);
+        noTags_TXT = (TextView)rootView.findViewById(R.id.no_items_txt);
         return rootView;
     }
 
@@ -43,16 +66,40 @@ public class ViewTagsFrag extends Fragment {
     public void onStart(){
         super.onStart();
 
+        dbAdapter = new DBAdapter(context);
+        dbAdapter.open();
+
+        tagList = dbAdapter.getTagList();
+
+        //check for empty lists
+        if(tagList.size() <= 0){
+            noTags_TXT.setVisibility(View.VISIBLE);
+        }else{
+            listView.setAdapter(new TagListAdapter(context, tagList));
+        }
+        listView.setOnItemClickListener(listViewListener);
+
     }
+
+    private AdapterView.OnItemClickListener listViewListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Toast.makeText(getActivity(), "item click: ", Toast.LENGTH_SHORT).show();
+        }
+    };
 
     @Override
     public void onResume(){
         super.onResume();
+
+        dbAdapter.open();
     }
 
     @Override
     public void onPause(){
         super.onPause();
+
+        dbAdapter.close();
     }
 
     @Override

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="list_item_title">#fff</color>
+    <color name="list_background">#303030</color>
+    <color name="list_background_pressed">#992416</color>
+    <color name="list_divider">#272727</color>
+    <color name="counter_text_bg">#626262</color>
+    <color name="counter_text_color">#c5c4c4</color>
+
+    <!--transparent color-->
+    <color name="transparent_color">#80000000</color>
+    <color name="transparent">#00000000</color>
+
+    <!--tag_list colors-->
+    <color name="search_list_divider">#ff030500</color>
+    <color name="extras_list_item">#4D4D4D</color>
+    <color name="search_list_background">#ffffffff</color>
+    <color name="search_list_background_pressed">#ffb0ff83</color>
+
+    <!--button colors-->
+    <color name="btn_background">#ffb0ff83</color>
+    <color name="btn_background_pressed">#ffb0ff83</color>
+    <color name="btn_stroke_pressed">#ffff0000</color>
+
+</resources>

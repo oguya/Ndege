@@ -5,6 +5,11 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <!--default vals-->
+    <string name="empty_list">Hold up! Seems like you haved tagged any bird yet</string>
+    <string name="share">Share</string>
+
+
     <!--tag bird frag-->
     <string name="tag_status_default">Tap to identify a bird</string>
     <string name="tag_status_activated">Listening...</string>
@@ -14,5 +19,6 @@
     <!--view tags-->
     <string name="tag_english_name">Sokoke Pipit</string>
     <string name="tag_genus_spec_name">Anthus sokokensis</string>
+
 
 </resources>

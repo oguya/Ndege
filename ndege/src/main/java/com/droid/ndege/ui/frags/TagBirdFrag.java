@@ -22,6 +22,8 @@ import roboguice.inject.InjectView;
  */
 public class TagBirdFrag extends Fragment {
 
+    private static final String LOG_TAG = "TagBirdFrag";
+
     ImageView tag_image;
     TextView tag_status_txt;
 
