@@ -131,6 +131,10 @@ public class Tag {
         return this.lng;
     }
 
+    public void setLng(String lng){
+        this.lng = lng;
+    }
+
     public String getXenoCantoURL(){
         return this.xenoCantoURL;
     }
