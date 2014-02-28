@@ -36,6 +36,16 @@
                 android:value="com.droid.ndege.ui.MainActivity" />
         </activity>
 
+        <activity android:name="com.droid.ndege.ui.ImageSliderActivity"
+            android:label="@string/title_activity_imageSlider"
+            android:parentActivityName="com.droid.ndege.ui.TagDetailsActivity">
+
+            <!-- v 4.1 support -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.droid.keja.ui.MainActivity" />
+        </activity>
+
     </application>
 
 </manifest>

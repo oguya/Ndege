@@ -158,6 +158,14 @@ public class TagDetailsActivity extends ActionBarActivity {
                 startActivity(intent);
                 break;
 
+            case R.id.bird_img_thumbnail: //start imageslider activity
+                Intent imageSlider = new Intent(this, ImageSliderActivity.class);
+                Bundle data = new Bundle();
+                data.putInt(Constants.KEY_TAG_ID, TAG_ID);
+                imageSlider.putExtras(data);
+                startActivity(imageSlider);
+                break;
+
             default: break;
         }
     }
