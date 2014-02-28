@@ -9,6 +9,7 @@
     <string name="empty_list">Hold up! Seems like you haved tagged any bird yet</string>
     <string name="share">Share</string>
     <string name="delete">Delete</string>
+    <string name="no_pics">No pictures to display. Move along now.</string>
 
 
     <!--tag bird frag-->

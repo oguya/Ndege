@@ -2,6 +2,7 @@ package com.droid.ndege.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -15,6 +16,8 @@ import com.droid.ndege.R;
 import com.droid.ndege.model.BirdImage;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 
 import java.util.ArrayList;
 
@@ -65,7 +68,7 @@ public class ImageSliderAdapter extends PagerAdapter {
 //        imgDisplay.setImageBitmap(bitmap);
 
         String imageURL = imageURLList.get(position).getImageURL();
-        imageLoader.displayImage(imageURL, imgDisplay, displayImageOptions);
+        imageLoader.displayImage(imageURL, imgDisplay, displayImageOptions, imageLoadingListener);
 
         //close button click event
         closeBTN.setOnClickListener(new View.OnClickListener() {
@@ -83,4 +86,27 @@ public class ImageSliderAdapter extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object object){
         ((ViewPager) container).removeView((RelativeLayout) object);
     }
+
+    private ImageLoadingListener imageLoadingListener = new ImageLoadingListener() {
+        @Override
+        public void onLoadingStarted(String s, View view) {
+            ((ImageView)view).setImageResource(R.drawable.img_loading);
+        }
+
+        @Override
+        public void onLoadingFailed(String s, View view, FailReason failReason) {
+            ((ImageView)view).setImageResource(R.drawable.failed);
+        }
+
+        @Override
+        public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+            ((ImageView)view).setImageBitmap(bitmap);
+        }
+
+        @Override
+        public void onLoadingCancelled(String s, View view) {
+            ((ImageView)view).setImageResource(R.drawable.failed);
+        }
+    };
+
 }

@@ -10,8 +10,11 @@ import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.droid.ndege.R;
 import com.droid.ndege.adapters.ImageSliderAdapter;
@@ -21,6 +24,11 @@ import com.droid.ndege.model.BirdImage;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -33,6 +41,7 @@ public class ImageSliderActivity extends ActionBarActivity {
     private ActionBar actionBar;
     private ViewPager viewPager;
     private ImageSliderAdapter adapter;
+    private TextView no_pics_TXT;
     private ArrayList<BirdImage> imageURLList;
 
     private ImageLoader imageLoader;
@@ -53,8 +62,6 @@ public class ImageSliderActivity extends ActionBarActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_imageslider);
-//        actionBar = getSupportActionBar();
-//        actionBar.setDisplayHomeAsUpEnabled(true);
 
         dbAdapter = new DBAdapter(this);
         dbAdapter.open();
@@ -76,6 +83,10 @@ public class ImageSliderActivity extends ActionBarActivity {
         imageURLList = dbAdapter.getImages(TAG_ID);
         initImageLoader();
         initUI();
+
+        if(imageURLList.size() <= 0){
+            noPics();
+        }
     }
 
     private void initUI(){
@@ -85,6 +96,7 @@ public class ImageSliderActivity extends ActionBarActivity {
 
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(IMAGE_POS);
+        no_pics_TXT = (TextView)findViewById(R.id.no_items_txt);
     }
 
     public void initImageLoader(){
@@ -104,9 +116,36 @@ public class ImageSliderActivity extends ActionBarActivity {
                 .showStubImage(R.drawable.bird_brown_cute)
                 .cacheInMemory(true)
                 .cacheOnDisc(true)
-                .showImageOnLoading(R.drawable.ic_launcher)
+                .showImageOnLoading(R.drawable.loading)
                 .showImageOnFail(R.drawable.ic_launcher)
                 .build();
+    }
+
+    private ImageLoadingListener imageLoadingListener = new ImageLoadingListener() {
+        @Override
+        public void onLoadingStarted(String s, View view) {
+            ((ImageView)view).setImageResource(R.drawable.img_loading);
+        }
+
+        @Override
+        public void onLoadingFailed(String s, View view, FailReason failReason) {
+            ((ImageView)view).setImageResource(R.drawable.failed);
+        }
+
+        @Override
+        public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+            ((ImageView)view).setImageBitmap(bitmap);
+        }
+
+        @Override
+        public void onLoadingCancelled(String s, View view) {
+            ((ImageView)view).setImageResource(R.drawable.failed);
+        }
+    };
+
+    public void noPics(){
+        no_pics_TXT.setVisibility(View.VISIBLE);
+        viewPager.setVisibility(View.GONE);
     }
 
     @Override
