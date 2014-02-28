@@ -50,7 +50,8 @@ public class DBAdapter {
     //get all tags
     public ArrayList<Tag> getTagList(){
         ArrayList<Tag> tagList = new ArrayList<Tag>();
-        String[] cols = {Tag.TAG_ID, Tag.ENGLISH_NAME, Tag.GENERIC_NAME, Tag.SPECIFIC_NAME, Tag.TAG_DATE};
+        String[] cols = {Tag.TAG_ID, Tag.ENGLISH_NAME, Tag.GENERIC_NAME, Tag.SPECIFIC_NAME,
+                Tag.TAG_DATE, Tag.THUMBNAIL_URL};
         Cursor cursor;
 
         try{
@@ -69,6 +70,7 @@ public class DBAdapter {
                 tag.setGenericName(cursor.getString(cursor.getColumnIndex(Tag.GENERIC_NAME)));
                 tag.setSpecificName(cursor.getString(cursor.getColumnIndex(Tag.SPECIFIC_NAME)));
                 tag.setTagDate(cursor.getString(cursor.getColumnIndex(Tag.TAG_DATE)));
+                tag.setThumbnailURL(cursor.getString(cursor.getColumnIndex(Tag.THUMBNAIL_URL)));
 
                 tagList.add(tag);
             }while (cursor.moveToNext());

@@ -1,7 +1,6 @@
 package com.droid.ndege.adapters;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +9,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.droid.ndege.R;
+import com.droid.ndege.lazylist.ImageLoader;
 import com.droid.ndege.model.Tag;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 /**
  * Created by james on 27/02/14.
@@ -26,6 +24,7 @@ public class TagListAdapter extends ArrayAdapter<Tag> {
 
     private Activity context;
     private ArrayList<Tag> tagList;
+    public com.droid.ndege.lazylist.ImageLoader imageLoader;
 
     private static class ViewHolder{
         ImageView birdImg;
@@ -39,6 +38,8 @@ public class TagListAdapter extends ArrayAdapter<Tag> {
 
         this.context = context;
         this.tagList = tagList;
+
+        imageLoader = new ImageLoader(context.getApplicationContext());
     }
 
     public View getView(int position, View convertView, ViewGroup parent){
@@ -64,8 +65,10 @@ public class TagListAdapter extends ArrayAdapter<Tag> {
         String genericName = tagList.get(position).getGenericName();
         String specificName = tagList.get(position).getSpecificName();
         String tagDate = tagList.get(position).getTagDate();
+        String thumbnailURL = tagList.get(position).getThumbnailURL();
 
         viewHolder.birdImg.setImageResource(R.drawable.bird_brown_cute);
+        imageLoader.DisplayImage(tagList.get(position).getThumbnailURL(), viewHolder.birdImg);
         viewHolder.englishName_TXT.setText(englishName);
         viewHolder.genSpecName_TXT.setText(genericName +" "+specificName);
         viewHolder.tagDate_TXT.setText(formatDate(tagDate));

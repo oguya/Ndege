@@ -21,6 +21,10 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by james on 27/02/14.
  */
@@ -162,5 +166,29 @@ public class TagDetailsActivity extends ActionBarActivity {
         Display display = getWindowManager().getDefaultDisplay();
 
         return new int[]{display.getWidth(), display.getHeight()};
+    }
+
+    //Thursday 27, Feb 2014
+    public String formatDate(String strDate){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEEE dd, MMM yyyy");
+        SimpleDateFormat tagDateFormat = new SimpleDateFormat("yyyy-MM-dd H:m:s");
+        Date now = new Date();
+        Date tagDate;
+        String tagDateStr = "";
+        try {
+            tagDate = tagDateFormat.parse(strDate);
+
+            if(tagDate.getYear() != now.getYear()){
+                dateFormat = new SimpleDateFormat("EEEEE dd, MMM yyyy");
+                tagDateStr = dateFormat.format(tagDate);
+            }else{
+                tagDateStr = dateFormat.format(tagDate);
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            tagDateStr = dateFormat.format(now);
+        }
+        return tagDateStr;
     }
 }
