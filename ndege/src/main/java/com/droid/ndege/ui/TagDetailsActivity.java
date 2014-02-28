@@ -8,21 +8,27 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ShareActionProvider;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.droid.ndege.R;
+import com.droid.ndege.constants.Constants;
+import com.droid.ndege.db.DBAdapter;
+import com.droid.ndege.model.Tag;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -39,8 +45,21 @@ public class TagDetailsActivity extends ActionBarActivity {
     private ImageLoaderConfiguration imageLoaderConfig;
     private DisplayImageOptions displayImageOptions;
 
+    private static int TAG_ID = 0;
+    private ArrayList<Tag> tagDetails;
+    private DBAdapter dbAdapter;
+
     private ImageView bird_img_thumbnail;
     private Button moreInfo_BTN;
+    private TextView bird_engName_TXT;
+    private TextView tag_genspecName_TXT;
+    private TextView tagdetail_recorder_TXT;
+    private TextView tagdetail_country_TXT;
+    private TextView tagdetail_location_TXT;
+    private TextView tagdetail_soundtype_TXT;
+    private TextView tagdetail_tagdate;
+    private TextView tagdetail_tagloc;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,16 +69,58 @@ public class TagDetailsActivity extends ActionBarActivity {
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        dbAdapter = new DBAdapter(this);
+        dbAdapter.open();
+
+
+        if(savedInstanceState != null){
+            TAG_ID = savedInstanceState.getInt(Constants.KEY_TAG_ID, 0);
+            Log.e(LOG_TAG, "Tag ID: " + TAG_ID);
+        }else{
+            Intent intent = getIntent();
+            TAG_ID = intent.getExtras().getInt(Constants.KEY_TAG_ID, 0);
+            Log.e(LOG_TAG, "Tag ID: " + TAG_ID);
+        }
+
+
+        tagDetails = dbAdapter.getTag(TAG_ID);
+
         initUI();
         initImageLoader();
-
-        String imageURL = "http://ibc.lynxeds.com/files/pictures/Crested_Guineafowl_LHarding_med.JPG";
-        imageLoader.displayImage(imageURL, bird_img_thumbnail, displayImageOptions);
+        setData();
     }
 
     public void initUI(){
         bird_img_thumbnail = (ImageView)findViewById(R.id.bird_img_thumbnail);
         moreInfo_BTN = (Button)findViewById(R.id.tagdetail_MoreInfo_BTN);
+        bird_engName_TXT = (TextView)findViewById(R.id.bird_engName);
+        tag_genspecName_TXT = (TextView)findViewById(R.id.tag_genspecName_TXT);
+        tagdetail_recorder_TXT = (TextView)findViewById(R.id.tagdetail_recorder_TXT);
+        tagdetail_country_TXT = (TextView)findViewById(R.id.tagdetail_country_TXT);
+        tagdetail_location_TXT = (TextView)findViewById(R.id.tagdetail_location_TXT);
+        tagdetail_soundtype_TXT = (TextView)findViewById(R.id.tagdetail_soundtype_TXT);
+        tagdetail_tagdate = (TextView)findViewById(R.id.tagdetail_tagdate);
+        tagdetail_tagloc = (TextView)findViewById(R.id.tagdetail_tagloc);
+    }
+
+    public void setData(){
+        String imageURL = tagDetails.get(0).getThumbnailURL();
+        String engName = tagDetails.get(0).getEnglishName();
+        String genSpecName = tagDetails.get(0).getGenericName() + " "+tagDetails.get(0).getSpecificName();
+        String recorder = tagDetails.get(0).getRecorder();
+        String country = tagDetails.get(0).getCountry();
+        String location = tagDetails.get(0).getLocation();
+        String soundType = tagDetails.get(0).getSoundType();
+        String tagDate = tagDetails.get(0).getTagDate();
+
+        imageLoader.displayImage(imageURL, bird_img_thumbnail, displayImageOptions);
+        bird_engName_TXT.setText(engName);
+        tag_genspecName_TXT.setText(genSpecName);
+        tagdetail_recorder_TXT.setText(recorder);
+        tagdetail_country_TXT.setText(country);
+        tagdetail_location_TXT.setText(location);
+        tagdetail_soundtype_TXT.setText(soundType);
+        tagdetail_tagdate.setText(formatDate(tagDate));
 
     }
 
@@ -139,21 +200,28 @@ public class TagDetailsActivity extends ActionBarActivity {
     public void onPause(){
         super.onPause();
 
+        dbAdapter.close();
     }
 
     @Override
     public void onResume(){
         super.onResume();
+
+        dbAdapter.open();
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState){
         super.onRestoreInstanceState(savedInstanceState);
+
+        TAG_ID = savedInstanceState.getInt(Constants.KEY_TAG_ID, 0);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
+
+        outState.getInt(Constants.KEY_TAG_ID, TAG_ID);
     }
 
     private Intent getDefaultShareIntent(){

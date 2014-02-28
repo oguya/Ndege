@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.droid.ndege.R;
 import com.droid.ndege.adapters.TagListAdapter;
+import com.droid.ndege.constants.Constants;
 import com.droid.ndege.db.DBAdapter;
 import com.droid.ndege.model.BirdImage;
 import com.droid.ndege.model.Tag;
@@ -90,9 +91,9 @@ public class ViewTagsFrag extends Fragment {
 
             //store tagID and birdID in bundle..start tagdetails activity
             Bundle bundle = new Bundle();
-//            bundle.putInt();
-
+            bundle.putInt(Constants.KEY_TAG_ID, tagList.get(position).getTagID());
             Intent intent = new Intent(context, TagDetailsActivity.class);
+            intent.putExtras(bundle);
             startActivity(intent);
 
         }

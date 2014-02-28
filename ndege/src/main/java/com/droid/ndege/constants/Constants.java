@@ -20,4 +20,7 @@ public class Constants {
     public static final String TBL_IMAGES = "images";
     public static final String TBL_TAGS = "tags";
 
+    //viewTag frags
+    public static final String KEY_TAG_ID = "TAG_ID";
+
 }

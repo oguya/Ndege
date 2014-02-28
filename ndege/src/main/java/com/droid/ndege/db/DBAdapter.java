@@ -88,8 +88,7 @@ public class DBAdapter {
                 Tag.SOUND_TYPE, Tag.SOUND_URL, Tag.THUMBNAIL_URL, Tag.TAG_DATE, Tag.TAG_LOCATION };
 
         try{
-            cursor = db.query(Constants.TBL_TAGS, cols, Tag.TAG_ID+" =? ", new String[]{String.valueOf(tagID)},
-                    null, null, null);
+            cursor = db.query(Constants.TBL_TAGS, cols, Tag.TAG_ID+" = "+tagID, null, null, null, null);
         }catch (SQLiteException ex){
             Log.e(LOG_TAG, "exception "+ex.getMessage());
             return tagList;
