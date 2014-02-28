@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.media.Image;
 import android.util.Log;
 
 import com.droid.ndege.constants.Constants;
@@ -150,8 +151,14 @@ public class DBAdapter {
         return imageList;
     }
 
+    public void deleteTag(int tagID){
+        db.delete(Constants.TBL_TAGS, Tag.TAG_ID+" = ?", new String[]{String.valueOf(tagID)});
+        deleteImages(tagID);
+    }
 
-
+    public void deleteImages(int tagID){
+        db.delete(Constants.TBL_IMAGES, BirdImage.TAG_ID+" = ?", new String[]{String.valueOf(tagID)});
+    }
 
     public static class DBHelper extends SQLiteOpenHelper {
 

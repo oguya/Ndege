@@ -1,9 +1,12 @@
 package com.droid.ndege.ui;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.DialogPreference;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -189,7 +192,7 @@ public class TagDetailsActivity extends ActionBarActivity {
                 break;
 
             case R.id.action_delete:
-                Toast.makeText(this, "delete...comming soon", Toast.LENGTH_SHORT).show();
+                showDeleteDialog();
                 break;
             default:
                 break;
@@ -261,5 +264,35 @@ public class TagDetailsActivity extends ActionBarActivity {
             tagDateStr = dateFormat.format(now);
         }
         return tagDateStr;
+    }
+
+    public void showDeleteDialog(){
+
+        //ok..delete
+        DialogInterface.OnClickListener delete = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dbAdapter.deleteTag(TAG_ID);
+                onBackPressed();
+            }
+        };
+
+        //cancel
+        DialogInterface.OnClickListener cancel = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        };
+
+        AlertDialog deleteDlg = new AlertDialog.Builder(this)
+                .setIcon(R.drawable.warning)
+                .setTitle(R.string.dlg_title)
+                .setMessage(R.string.dlg_msg)
+                .setCancelable(false)
+                .setPositiveButton(R.string.dlg_pos_BTN, delete)
+                .setNegativeButton(R.string.dlg_neg_BTN, cancel).create();
+
+        deleteDlg.show();
     }
 }

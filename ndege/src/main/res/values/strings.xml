@@ -35,4 +35,9 @@
     <string name="tagdetail_soundtype">Call</string>
     <string name="tagdetail_xenoCanto_lbl">More Info</string>
 
+    <!-- delete dialog -->
+    <string name="dlg_title">Delete Tag</string>
+    <string name="dlg_msg">Are you sure you want to delete this Tag?</string>
+    <string name="dlg_pos_BTN">OK</string>
+    <string name="dlg_neg_BTN">Cancel</string>
 </resources>
