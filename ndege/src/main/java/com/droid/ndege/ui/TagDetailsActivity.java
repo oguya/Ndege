@@ -105,7 +105,6 @@ public class TagDetailsActivity extends ActionBarActivity {
         tagdetail_tagdate = (TextView)findViewById(R.id.tagdetail_tagdate);
         tagdetail_tagloc = (TextView)findViewById(R.id.tagdetail_tagloc);
     }
-
     public void setData(){
         String imageURL = tagDetails.get(0).getThumbnailURL();
         String engName = tagDetails.get(0).getEnglishName();
@@ -242,7 +241,7 @@ public class TagDetailsActivity extends ActionBarActivity {
 
     //Thursday 27, Feb 2014
     public String formatDate(String strDate){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEEE dd, MMM yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE dd, MMM yyyy");
         SimpleDateFormat tagDateFormat = new SimpleDateFormat("yyyy-MM-dd H:m:s");
         Date now = new Date();
         Date tagDate;
@@ -251,7 +250,7 @@ public class TagDetailsActivity extends ActionBarActivity {
             tagDate = tagDateFormat.parse(strDate);
 
             if(tagDate.getYear() != now.getYear()){
-                dateFormat = new SimpleDateFormat("EEEEE dd, MMM yyyy");
+                dateFormat = new SimpleDateFormat("EEEE dd, MMM yyyy");
                 tagDateStr = dateFormat.format(tagDate);
             }else{
                 tagDateStr = dateFormat.format(tagDate);
