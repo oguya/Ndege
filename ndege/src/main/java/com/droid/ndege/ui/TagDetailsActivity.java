@@ -72,16 +72,19 @@ public class TagDetailsActivity extends ActionBarActivity {
         dbAdapter = new DBAdapter(this);
         dbAdapter.open();
 
-
-        if(savedInstanceState != null){
-            TAG_ID = savedInstanceState.getInt(Constants.KEY_TAG_ID, 0);
-            Log.e(LOG_TAG, "Tag ID: " + TAG_ID);
-        }else{
+        try{
             Intent intent = getIntent();
-            TAG_ID = intent.getExtras().getInt(Constants.KEY_TAG_ID, 0);
-            Log.e(LOG_TAG, "Tag ID: " + TAG_ID);
+            TAG_ID = intent.getExtras().getInt(Constants.KEY_TAG_ID);
+            Log.e(LOG_TAG, "Tag ID: getintent:" + TAG_ID);
+        }catch (NullPointerException npe){
+            Log.e(LOG_TAG, "TAG_ID null: "+npe.getMessage());
         }
 
+        //activity resume
+        if(savedInstanceState != null){
+            TAG_ID = savedInstanceState.getInt(Constants.KEY_TAG_ID);
+            Log.e(LOG_TAG, "Tag ID: savedInstance:" + TAG_ID);
+        }
 
         tagDetails = dbAdapter.getTag(TAG_ID);
 
@@ -214,14 +217,15 @@ public class TagDetailsActivity extends ActionBarActivity {
     public void onRestoreInstanceState(Bundle savedInstanceState){
         super.onRestoreInstanceState(savedInstanceState);
 
-        TAG_ID = savedInstanceState.getInt(Constants.KEY_TAG_ID, 0);
+        TAG_ID = savedInstanceState.getInt(Constants.KEY_TAG_ID);
+        Log.e(LOG_TAG, "restoring tagID: "+TAG_ID);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
-
-        outState.getInt(Constants.KEY_TAG_ID, TAG_ID);
+        Log.e(LOG_TAG, "saving tagID: "+TAG_ID);
+        outState.putInt(Constants.KEY_TAG_ID, TAG_ID);
     }
 
     private Intent getDefaultShareIntent(){
