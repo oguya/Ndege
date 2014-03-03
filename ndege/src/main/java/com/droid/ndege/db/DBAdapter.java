@@ -1,5 +1,6 @@
 package com.droid.ndege.db;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -156,8 +157,47 @@ public class DBAdapter {
         deleteImages(tagID);
     }
 
+    public long addTag(Tag tag){
+        long tagID;
+
+        ContentValues values = new ContentValues();
+        values.put(Tag.TAG_ID, tag.getTagID());
+        values.put(Tag.BIRD_ID, tag.getBirdID());
+        values.put(Tag.ENGLISH_NAME, tag.getEnglishName());
+        values.put(Tag.GENERIC_NAME, tag.getGenericName());
+        values.put(Tag.SPECIFIC_NAME, tag.getSpecificName());
+        values.put(Tag.RECORDER, tag.getRecorder());
+        values.put(Tag.LOCATION, tag.getLocation());
+        values.put(Tag.COUNTRY, tag.getCountry());
+        values.put(Tag.LAT, tag.getLat());
+        values.put(Tag.LNG, tag.getLng());
+        values.put(Tag.XENOCANTOURL, tag.getXenoCantoURL());
+        values.put(Tag.SOUND_TYPE, tag.getSoundType());
+        values.put(Tag.SOUND_URL, tag.getSoundURL());
+        values.put(Tag.THUMBNAIL_URL, tag.getThumbnailURL());
+        values.put(Tag.TAG_DATE, tag.getTagDate());
+        values.put(Tag.TAG_LOCATION, tag.getTagLocation());
+
+        tagID = db.insert(Constants.TBL_TAGS, null, values);
+
+        return tagID;
+    }
+
     public void deleteImages(int tagID){
         db.delete(Constants.TBL_IMAGES, BirdImage.TAG_ID+" = ?", new String[]{String.valueOf(tagID)});
+    }
+
+    public void addImages(ArrayList<BirdImage> birdImages){
+
+        for(BirdImage birdImage : birdImages){
+            ContentValues values = new ContentValues();
+            values.put(BirdImage.IMAGE_ID, birdImage.getImageID());
+            values.put(BirdImage.TAG_ID, birdImage.getTagID());
+            values.put(BirdImage.IMAGE_URL, birdImage.getImageURL());
+            values.put(BirdImage.SITE_URL, birdImage.getSiteURL());
+
+            db.insert(Constants.TBL_IMAGES, null, values);
+        }
     }
 
     public static class DBHelper extends SQLiteOpenHelper {
