@@ -3,6 +3,7 @@ package com.droid.ndege.ui.frags;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -24,15 +25,19 @@ public class TagBirdFrag extends Fragment {
 
     private static final String LOG_TAG = "TagBirdFrag";
 
+    private Activity activity;
+
     ImageView tag_image;
     TextView tag_status_txt;
 
+    private boolean RECORDING = false;
 
     public TagBirdFrag(){}
 
     @Override
     public void onAttach(Activity activity){
         super.onAttach(activity);
+        this.activity = activity;
     }
 
     @Override
@@ -41,6 +46,7 @@ public class TagBirdFrag extends Fragment {
 
         //init ui here
         tag_image = (ImageView)rootView.findViewById(R.id.tap_img);
+        tag_image.setOnClickListener(clickListener);
         tag_status_txt = (TextView)rootView.findViewById(R.id.tag_status);
 
         return rootView;
@@ -57,10 +63,25 @@ public class TagBirdFrag extends Fragment {
     public void onStart(){
         super.onStart();
 
+        setFonts();
 //        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.id.tap_img);
 //        BorderDrawable drawable = new BorderDrawable(getResources(), bitmap);
 //        tag_image.setImageDrawable(drawable);
     }
+
+    private View.OnClickListener clickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.tap_img:  //start recording
+                    RECORDING = true;
+                    tag_status_txt.setText(getString(R.string.tag_status_activated));
+                    break;
+
+                default: break;
+            }
+        }
+    };
 
     @Override
     public void onResume(){
@@ -75,5 +96,11 @@ public class TagBirdFrag extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
+    }
+
+    //set fonts
+    public void setFonts(){
+        Typeface tf = Typeface.createFromAsset(activity.getAssets(), "fonts/Roboto_Light.ttf");
+        tag_status_txt.setTypeface(tf);
     }
 }
