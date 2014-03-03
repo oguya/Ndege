@@ -116,7 +116,7 @@ public class ImageSliderActivity extends ActionBarActivity {
                 .showStubImage(R.drawable.bird_brown_cute)
                 .cacheInMemory(true)
                 .cacheOnDisc(true)
-                .showImageOnLoading(R.drawable.loading)
+                .showImageOnLoading(R.drawable.img_loading)
                 .showImageOnFail(R.drawable.ic_launcher)
                 .build();
     }

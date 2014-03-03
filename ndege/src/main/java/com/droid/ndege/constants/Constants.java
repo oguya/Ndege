@@ -23,4 +23,20 @@ public class Constants {
     //viewTag frags
     public static final String KEY_TAG_ID = "TAG_ID";
 
+    //net services & receivers
+    public static final String RECEIVER_FILTER = "com.droid.ndege.ui.TagDetailsActivity";
+    public static final String KEY_FILEPATH = "filePath";
+    public static final String KEY_RESULT_CODE = "ResultCode";
+    public static final int RESULT_OK = 1;
+    public static final int RESULT_FAILED = 0;
+
+    public static final int TAG_RESULT_OK = 1;
+    public static final int TAG_RESULT_FAILED = 0;
+    public static final int TAG_NET_ERROR = -1;
+
+    //backend server url args
+    public static final String BG_SVR_URL_TAG_FILE = "http://127.0.0.1/";
+    public static final String BG_TAG_AUDIO_FILE = "audiofile";
+    public static final String BG_DEVICE_ID = "deviceid";
+
 }

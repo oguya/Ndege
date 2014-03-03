@@ -1,5 +1,9 @@
 package com.droid.ndege.ui;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
@@ -15,6 +19,7 @@ import com.droid.ndege.R;
 import com.droid.ndege.adapters.TabsPagerAdapter;
 import com.droid.ndege.constants.Constants;
 import com.droid.ndege.db.DBAdapter;
+import com.droid.ndege.net.NetOpsService;
 import com.droid.ndege.utils.FirstRunInit;
 
 public class MainActivity extends ActionBarActivity {
@@ -27,6 +32,8 @@ public class MainActivity extends ActionBarActivity {
 
     public DBAdapter dbAdapter;
     private FirstRunInit firstRunInit;
+
+    private Receiver receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +56,21 @@ public class MainActivity extends ActionBarActivity {
             actionBar.addTab(actionBar.newTab().setText(tab).setTabListener(tabListener));
 
         viewPager.setOnPageChangeListener(pageChangeListener);
+
+        dbAdapter = new DBAdapter(this);
+
+        receiver = new Receiver();
+    }
+
+    //fire up service
+    public void fireUpService(){
+        Intent intent = new Intent(this, NetOpsService.class);
+        Bundle bundle = new Bundle();
+//        bundle.putString(Constants.KEY_FILEPATH, "filepath");
+
+        intent.putExtras(bundle);
+        startService(intent);
+
     }
 
     private ActionBar.TabListener tabListener = new ActionBar.TabListener() {
@@ -106,6 +128,20 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void onResume(){
+        super.onResume();
+
+        dbAdapter.open();
+        registerReceiver(receiver, new IntentFilter(Constants.RECEIVER_FILTER));
+    }
+
+    public void onPause(){
+        super.onPause();
+
+        dbAdapter.close();
+        unregisterReceiver(receiver);
+    }
+
     private void checkFirstRun(){
         SharedPreferences firstRunPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean firstRun = firstRunPrefs.getBoolean("FirstRun", true);
@@ -119,6 +155,15 @@ public class MainActivity extends ActionBarActivity {
             firstRunPrefs.edit().putBoolean("FirstRun", false).commit();
         }else{
             Log.e(LOG_TAG, "First Run! all assets GREEN...");
+        }
+    }
+
+    //process results from backend svr & service
+    private class Receiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
 
         }
     }

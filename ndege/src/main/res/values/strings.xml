@@ -45,4 +45,6 @@
     <!-- imageSlider activity -->
     <string name="title_activity_imageSlider">View Images</string>
 
+    <!-- services & receivers -->
+    <string name="svc_netops_proc">:Ndege</string>
 </resources>

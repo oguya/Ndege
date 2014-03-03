@@ -46,6 +46,14 @@
                 android:value="com.droid.keja.ui.MainActivity" />
         </activity>
 
+        <!-- services -->
+        <service
+            android:name="com.droid.ndege.net.NetOpsService"
+            android:icon="@drawable/ic_launcher"
+            android:process="@string/svc_netops_proc"
+            android:enabled="true"
+            android:exported="true"/>
+
     </application>
 
 </manifest>

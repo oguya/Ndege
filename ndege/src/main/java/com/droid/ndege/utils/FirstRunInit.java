@@ -1,6 +1,7 @@
 package com.droid.ndege.utils;
 
 import android.content.Context;
+import android.provider.Settings;
 import android.util.Log;
 
 import com.droid.ndege.constants.Constants;
@@ -35,6 +36,10 @@ public class FirstRunInit {
             e.printStackTrace();
             Log.e(LOG_TAG, "unable to copy DB! " + e.getMessage());
         }
+    }
+
+    public String getDeviceID(){
+        return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
 }
