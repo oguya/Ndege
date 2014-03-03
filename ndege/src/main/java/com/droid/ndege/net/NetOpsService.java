@@ -20,6 +20,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -48,10 +49,12 @@ public class NetOpsService extends IntentService {
         String filePath = bundle.getString(Constants.KEY_FILEPATH);
 
         Tag tag = null;
+        JSONObject jsonObject;
 
         try{
-            tag = uploadTagFile(filePath, Constants.BG_SVR_URL_TAG_FILE);
-
+//            tag = uploadTagFile(filePath, Constants.BG_SVR_URL_TAG_FILE);
+            jsonObject = uploadTagFile(filePath, Constants.BG_SVR_URL_TAG_FILE);
+            
         }catch (Exception ex){
             Log.e(LOG_TAG, "Unable to upload file: "+ex);
         }
@@ -66,8 +69,8 @@ public class NetOpsService extends IntentService {
     }
 
     //upload audio file to backend return tag
-    public Tag uploadTagFile(String filePath, String svrURL) throws IOException{
-        Tag tag = null;
+    public JSONObject uploadTagFile(String filePath, String svrURL) throws IOException{
+        JSONObject jsonObject;
 
         MultiValueMap<String, Object> args = new LinkedMultiValueMap<String, Object>();
         args.add(Constants.BG_TAG_AUDIO_FILE, new FileSystemResource(filePath));
@@ -77,9 +80,9 @@ public class NetOpsService extends IntentService {
         RestTemplate restTemplate = new RestTemplate();
 
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-        tag = restTemplate.getForObject(svrURL, Tag.class, args);
+        jsonObject = restTemplate.getForObject(svrURL, JSONObject.class, args);
 
-        return tag;
+        return jsonObject;
     }
 
     //publish results using broadcast receivers
