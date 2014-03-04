@@ -9,6 +9,7 @@ import android.os.StrictMode;
 import android.util.Log;
 
 import com.droid.ndege.constants.Constants;
+import com.droid.ndege.db.DBAdapter;
 import com.droid.ndege.model.Tag;
 import com.droid.ndege.utils.FirstRunInit;
 
@@ -37,6 +38,7 @@ import java.io.InputStreamReader;
 public class NetOpsService extends IntentService {
 
     private final static String LOG_TAG = "NetOpsService";
+    private DBAdapter dbAdapter;
 
     public NetOpsService() {
         super("NetOpsService");
@@ -44,6 +46,8 @@ public class NetOpsService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        dbAdapter = new DBAdapter(this);
+        dbAdapter.open();
         Bundle bundle = intent.getExtras();
 
         String filePath = bundle.getString(Constants.KEY_FILEPATH);
@@ -54,7 +58,7 @@ public class NetOpsService extends IntentService {
         try{
 //            tag = uploadTagFile(filePath, Constants.BG_SVR_URL_TAG_FILE);
             jsonObject = uploadTagFile(filePath, Constants.BG_SVR_URL_TAG_FILE);
-            
+
         }catch (Exception ex){
             Log.e(LOG_TAG, "Unable to upload file: "+ex);
         }
@@ -99,8 +103,15 @@ public class NetOpsService extends IntentService {
     @Override
     public void onDestroy(){
         super.onDestroy();
+
+        dbAdapter.close();
     }
 
+    //parse json & add tag
+    public void parseJSONResponse(JSONObject jsonObject){
+        Tag tag = new Tag();
+
+    }
 
     public String connect2Net() {
         String jsonURL = "";
