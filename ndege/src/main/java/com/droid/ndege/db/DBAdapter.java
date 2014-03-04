@@ -158,7 +158,7 @@ public class DBAdapter {
     }
 
     public long addTag(Tag tag){
-        long tagID;
+        long tagID = 0;
 
         ContentValues values = new ContentValues();
         values.put(Tag.TAG_ID, tag.getTagID());
@@ -178,7 +178,18 @@ public class DBAdapter {
         values.put(Tag.TAG_DATE, tag.getTagDate());
         values.put(Tag.TAG_LOCATION, tag.getTagLocation());
 
-        tagID = db.insert(Constants.TBL_TAGS, null, values);
+        db.beginTransaction();
+
+        try{
+            tagID = db.insert(Constants.TBL_TAGS, null, values);
+            db.setTransactionSuccessful();
+        }catch (SQLiteException ex){
+            db.endTransaction();
+            Log.e(LOG_TAG, "exception "+ex.getMessage());
+        }
+        finally {
+            db.endTransaction();
+        }
 
         return tagID;
     }
@@ -196,7 +207,15 @@ public class DBAdapter {
             values.put(BirdImage.IMAGE_URL, birdImage.getImageURL());
             values.put(BirdImage.SITE_URL, birdImage.getSiteURL());
 
-            db.insert(Constants.TBL_IMAGES, null, values);
+            try{
+                db.insert(Constants.TBL_IMAGES, null, values);
+            }catch (SQLiteException ex){
+                db.endTransaction();
+                Log.e(LOG_TAG, "exception "+ex.getMessage());
+            }
+            finally {
+                db.endTransaction();
+            }
         }
     }
 
