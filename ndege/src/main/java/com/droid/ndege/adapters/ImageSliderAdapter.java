@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.droid.ndege.R;
@@ -32,6 +33,7 @@ public class ImageSliderAdapter extends PagerAdapter {
 
     private ImageLoader imageLoader;
     private DisplayImageOptions displayImageOptions;
+    private ProgressBar progressBar;
 
     public ImageSliderAdapter(Activity activity, ArrayList<BirdImage> imageURLList,
                               ImageLoader imageLoader, DisplayImageOptions displayImageOptions ){
@@ -61,6 +63,7 @@ public class ImageSliderAdapter extends PagerAdapter {
         View viewLayout = layoutInflater.inflate(R.layout.imageslider_item, container, false);
         imgDisplay = (ImageView)viewLayout.findViewById(R.id.imgDisplay);
         closeBTN = (Button)viewLayout.findViewById(R.id.btnClose);
+        progressBar = (ProgressBar)viewLayout.findViewById(R.id.progLoading);
 
 //        BitmapFactory.Options options = new BitmapFactory.Options();
 //        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
@@ -90,22 +93,28 @@ public class ImageSliderAdapter extends PagerAdapter {
     private ImageLoadingListener imageLoadingListener = new ImageLoadingListener() {
         @Override
         public void onLoadingStarted(String s, View view) {
-            ((ImageView)view).setImageResource(R.drawable.img_loading);
+            ((ImageView)view).setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
         public void onLoadingFailed(String s, View view, FailReason failReason) {
-            ((ImageView)view).setImageResource(R.drawable.failed);
+            ((ImageView)view).setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
         public void onLoadingComplete(String s, View view, Bitmap bitmap) {
             ((ImageView)view).setImageBitmap(bitmap);
+            view.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
         }
 
         @Override
         public void onLoadingCancelled(String s, View view) {
-            ((ImageView)view).setImageResource(R.drawable.failed);
+            if(view != null)
+                ((ImageView)view).setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
         }
     };
 

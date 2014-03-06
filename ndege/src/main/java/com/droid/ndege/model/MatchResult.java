@@ -10,9 +10,12 @@ import android.os.Parcelable;
  * contains:
  *          - tagID of the new id'd tag
  *          - tagResults of the audio matching  op.
+ *              - 1 => success
  *
  */
 public class MatchResult implements Parcelable {
+
+    public static final String TAG_RESULTS = "tagResults";
 
     private int tagID;
     private int tagResults;
