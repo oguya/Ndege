@@ -11,6 +11,9 @@
     <color name="transparent_color">#80000000</color>
     <color name="transparent">#00000000</color>
 
+    <!-- tag bird colors-->
+    <color name="tag_bird_txt">#2480A2</color>
+
     <!--tag_list colors-->
     <color name="search_list_divider">#ff030500</color>
     <color name="extras_list_item">#4D4D4D</color>

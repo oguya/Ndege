@@ -5,6 +5,7 @@ package com.droid.ndege.model;
  */
 public class BirdImage {
 
+    public static final String IMAGES_LBL = "images";
     public static final String IMAGE_ID = "imageID";
     public static final String TAG_ID = "tagID";
     public static final String IMAGE_URL = "imageURL";

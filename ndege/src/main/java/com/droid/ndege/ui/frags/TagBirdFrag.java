@@ -1,6 +1,8 @@
 package com.droid.ndege.ui.frags;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
@@ -13,7 +15,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.droid.ndege.R;
+import com.droid.ndege.constants.Constants;
+import com.droid.ndege.net.NetOpsService;
+import com.droid.ndege.receivers.NetReceiver;
 import com.droid.ndege.ui.viewutils.BorderDrawable;
+
+import org.w3c.dom.Text;
 
 import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
@@ -29,8 +36,10 @@ public class TagBirdFrag extends Fragment {
 
     ImageView tag_image;
     TextView tag_status_txt;
+    TextView tag_results_txt;
 
     private boolean RECORDING = false;
+    private BReceiver bReceiver;
 
     public TagBirdFrag(){}
 
@@ -48,6 +57,7 @@ public class TagBirdFrag extends Fragment {
         tag_image = (ImageView)rootView.findViewById(R.id.tap_img);
         tag_image.setOnClickListener(clickListener);
         tag_status_txt = (TextView)rootView.findViewById(R.id.tag_status);
+        tag_results_txt = (TextView)rootView.findViewById(R.id.tag_results);
 
         return rootView;
     }
@@ -64,9 +74,20 @@ public class TagBirdFrag extends Fragment {
         super.onStart();
 
         setFonts();
+        bReceiver = new BReceiver();
 //        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.id.tap_img);
 //        BorderDrawable drawable = new BorderDrawable(getResources(), bitmap);
 //        tag_image.setImageDrawable(drawable);
+    }
+
+    //start service to upload file
+    public void fireUpService(String wavFile){
+        Intent intent = new Intent(activity, NetOpsService.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.KEY_FILEPATH, wavFile);
+
+        intent.putExtras(bundle);
+        activity.startService(intent);
     }
 
     private View.OnClickListener clickListener = new View.OnClickListener() {
@@ -76,6 +97,7 @@ public class TagBirdFrag extends Fragment {
                 case R.id.tap_img:  //start recording
                     RECORDING = true;
                     tag_status_txt.setText(getString(R.string.tag_status_activated));
+//                    fireUpService("");
                     break;
 
                 default: break;
@@ -86,11 +108,13 @@ public class TagBirdFrag extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
+        activity.registerReceiver(bReceiver, new IntentFilter(Constants.RECEIVER_FILTER));
     }
 
     @Override
     public void onPause(){
         super.onPause();
+        activity.unregisterReceiver(bReceiver);
     }
 
     @Override
@@ -102,5 +126,14 @@ public class TagBirdFrag extends Fragment {
     public void setFonts(){
         Typeface tf = Typeface.createFromAsset(activity.getAssets(), "fonts/Roboto_Light.ttf");
         tag_status_txt.setTypeface(tf);
+        tag_results_txt.setTypeface(tf);
+    }
+
+    public class BReceiver extends NetReceiver{
+
+        public BReceiver(){
+            super(activity, tag_results_txt, tag_status_txt);
+        }
+
     }
 }

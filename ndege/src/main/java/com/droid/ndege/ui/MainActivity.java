@@ -19,6 +19,7 @@ import com.droid.ndege.R;
 import com.droid.ndege.adapters.TabsPagerAdapter;
 import com.droid.ndege.constants.Constants;
 import com.droid.ndege.db.DBAdapter;
+import com.droid.ndege.model.MatchResult;
 import com.droid.ndege.net.NetOpsService;
 import com.droid.ndege.utils.FirstRunInit;
 
@@ -62,16 +63,7 @@ public class MainActivity extends ActionBarActivity {
         receiver = new Receiver();
     }
 
-    //fire up service
-    public void fireUpService(){
-        Intent intent = new Intent(this, NetOpsService.class);
-        Bundle bundle = new Bundle();
-//        bundle.putString(Constants.KEY_FILEPATH, "filepath");
 
-        intent.putExtras(bundle);
-        startService(intent);
-
-    }
 
     private ActionBar.TabListener tabListener = new ActionBar.TabListener() {
         @Override
@@ -132,14 +124,12 @@ public class MainActivity extends ActionBarActivity {
         super.onResume();
 
         dbAdapter.open();
-        registerReceiver(receiver, new IntentFilter(Constants.RECEIVER_FILTER));
     }
 
     public void onPause(){
         super.onPause();
 
         dbAdapter.close();
-        unregisterReceiver(receiver);
     }
 
     private void checkFirstRun(){
@@ -164,7 +154,34 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
+            MatchResult matchResult = (MatchResult)bundle.getParcelable(Constants.KEY_MATCH_RESULT);
 
+            int tagResults = matchResult.getTagResults();
+            int tagID = matchResult.getTagID();
+            switch (tagResults){
+                case Constants.TAG_RESULT_OK: //open tagDetails
+                    if(tagID == -1){ //db error
+
+                    }else{
+                        Bundle data = new Bundle();
+                        data.putInt(Constants.KEY_TAG_ID, tagID);
+
+                        Intent tagDetails = new Intent(context, TagDetailsActivity.class);
+                        tagDetails.putExtras(data);
+                        startActivity(intent);
+                    }
+                    break;
+
+                case Constants.TAG_RESULT_FAILED: //show error
+
+                    break;
+
+                case Constants.TAG_NET_ERROR: //show error
+
+                    break;
+
+                default: break;
+            }
         }
     }
 

@@ -15,7 +15,9 @@
     <!--tag bird frag-->
     <string name="tag_status_default">Tap to identify a bird</string>
     <string name="tag_status_activated">Listening...</string>
-    <string name="tag_status_failed">Failed to recognize</string>
+    <string name="tag_status_failed">Sorry! We were unable to identify the bird sound</string>
+    <string name="tag_status_net_err">Sorry! We were unable to reach our cloud servers.\
+        Please check your internet connection and try again</string>
     <string name="content_desc">image</string>
 
     <!--view tags-->
