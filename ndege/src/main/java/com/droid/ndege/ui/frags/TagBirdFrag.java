@@ -3,11 +3,14 @@ package com.droid.ndege.ui.frags;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.droid.ndege.R;
+import com.droid.ndege.audio.RecordBirdSound;
 import com.droid.ndege.constants.Constants;
 import com.droid.ndege.net.NetOpsService;
 import com.droid.ndege.receivers.NetReceiver;
@@ -40,6 +44,8 @@ public class TagBirdFrag extends Fragment {
 
     private boolean RECORDING = false;
     private BReceiver bReceiver;
+    private AudioRecorder audioRecorder;
+    private Timer timer;
 
     public TagBirdFrag(){}
 
@@ -75,6 +81,9 @@ public class TagBirdFrag extends Fragment {
 
         setFonts();
         bReceiver = new BReceiver();
+        audioRecorder = new AudioRecorder(activity);
+        timer = new Timer(Constants.RECORD_TIME_MILLIS, Constants.RECORD_TIME_INTERVAL_MILLIS);
+
 //        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.id.tap_img);
 //        BorderDrawable drawable = new BorderDrawable(getResources(), bitmap);
 //        tag_image.setImageDrawable(drawable);
@@ -94,9 +103,19 @@ public class TagBirdFrag extends Fragment {
         @Override
         public void onClick(View view) {
             switch (view.getId()){
-                case R.id.tap_img:  //start recording
-                    RECORDING = true;
+                case R.id.tap_img:  //start recording, timer
+                    tag_results_txt.setVisibility(View.GONE);
                     tag_status_txt.setText(getString(R.string.tag_status_activated));
+                    tag_image.setEnabled(false);
+                    if(!RECORDING){
+                        RECORDING = true;
+                        lockOrientation();
+                        audioRecorder.startRecorder();
+                        timer.start();
+                    }
+
+
+
 //                    fireUpService("");
                     break;
 
@@ -104,6 +123,22 @@ public class TagBirdFrag extends Fragment {
             }
         }
     };
+
+    public void lockOrientation(){
+        int orientation = activity.getResources().getConfiguration().orientation;
+
+        switch (orientation){
+            case ActivityInfo.SCREEN_ORIENTATION_PORTRAIT:
+                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                break;
+            case ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE:
+                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                break;
+            default:
+                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+                break;
+        }
+    }
 
     @Override
     public void onResume(){
@@ -132,8 +167,42 @@ public class TagBirdFrag extends Fragment {
     public class BReceiver extends NetReceiver{
 
         public BReceiver(){
-            super(activity, tag_results_txt, tag_status_txt);
+            super(activity, tag_results_txt, tag_status_txt, tag_image);
         }
 
+    }
+
+    public class AudioRecorder extends RecordBirdSound{
+
+        public AudioRecorder(Activity activity) {
+            super(activity);
+        }
+
+        public void startRecorder(){
+            super.startRecording();
+        }
+
+        public void stopRecorder(){
+            super.stopRecording();
+        }
+    }
+
+    private class Timer extends CountDownTimer{
+
+        public Timer(long millisInFuture, long intervalMillis){
+            super(millisInFuture, intervalMillis);
+        }
+
+        @Override
+        public void onTick(long remainingMillis){
+            Log.d(LOG_TAG, "Timer: "+remainingMillis);
+        }
+
+        @Override
+        public void onFinish(){
+            audioRecorder.stopRecorder();
+            Log.e(LOG_TAG, "Finished Recording: "+audioRecorder.WAV_FILE);
+            fireUpService(audioRecorder.WAV_FILE);
+        }
     }
 }

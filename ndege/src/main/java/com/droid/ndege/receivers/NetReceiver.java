@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,11 +25,13 @@ public class NetReceiver extends BroadcastReceiver {
     private TextView tag_results;
     private TextView tag_status;
     private Activity activity;
+    private ImageView tag_img;
 
-    public NetReceiver(Activity activity, TextView tag_results, TextView tag_status){
+    public NetReceiver(Activity activity, TextView tag_results, TextView tag_status, ImageView tag_img){
         this.activity = activity;
         this.tag_results = tag_results;
         this.tag_status = tag_status;
+        this.tag_img = tag_img;
     }
 
     public NetReceiver(){}
@@ -41,6 +44,7 @@ public class NetReceiver extends BroadcastReceiver {
         int tagResults = matchResult.getTagResults();
         int tagID = matchResult.getTagID();
 
+        vibrator();
         Log.e("NetReceiver", "TagID: "+tagID+" results: "+tagResults);
 
         switch (tagResults){
@@ -75,19 +79,27 @@ public class NetReceiver extends BroadcastReceiver {
                 tag_results.setVisibility(View.VISIBLE);
                 tag_results.setText(activity.getString(R.string.tag_status_failed));
                 tag_status.setText(activity.getString(R.string.tag_status_default));
+                tag_img.setEnabled(true);
                 break;
 
             case Constants.TAG_NET_ERROR: //network error
                 tag_results.setVisibility(View.VISIBLE);
                 tag_results.setText(activity.getString(R.string.tag_status_net_err));
                 tag_status.setText(activity.getString(R.string.tag_status_default));
+                tag_img.setEnabled(true);
                 break;
 
             default:
                 tag_results.setVisibility(View.VISIBLE);
                 tag_status.setText(activity.getString(R.string.tag_status_activated));
+                tag_img.setEnabled(true);
                 break;
         }
+    }
+
+    private void vibrator(){
+        Vibrator vibrator = (Vibrator)activity.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate((int)Constants.VIBRATOR_TIME);
     }
 
 }

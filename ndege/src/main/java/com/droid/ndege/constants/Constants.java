@@ -35,6 +35,11 @@ public class Constants {
     public static final int TAG_NET_ERROR = -1;
     public static final int TAG_DB_ERROR = -100;
 
+    //timer
+    public static final int RECORD_TIME_MILLIS = 20 * 1000; //10 sec
+    public static final int RECORD_TIME_INTERVAL_MILLIS = 1 * 1000; //1 sec
+    public static final double VIBRATOR_TIME = 0.5 * 1000; // .5 sec
+
     //backend server url args
     public static final String BG_SVR_URL_TAG_FILE = "http://127.0.0.1/";
     public static final String BG_TAG_AUDIO_FILE = "audiofile";

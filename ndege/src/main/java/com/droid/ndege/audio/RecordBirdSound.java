@@ -33,6 +33,7 @@ public class RecordBirdSound {
     private int bufferSize = 0;
     private Thread recordingThread = null;
     private boolean isRecording = false;
+    public String WAV_FILE = "";
 
     public RecordBirdSound(Activity activity) {
         this.activity = activity;
@@ -63,7 +64,7 @@ public class RecordBirdSound {
 
     public void writeAudioDataToFile() {
         byte[] data = new byte[bufferSize];
-        String fileName = getFileName();
+        String fileName = getTmpFile();
         FileOutputStream fos = null;
 
         try {
@@ -156,7 +157,8 @@ public class RecordBirdSound {
         if (!file.exists())
             file.mkdirs();
 
-        return (file.getAbsolutePath() + "/" + System.currentTimeMillis() + AUDIO_RECORDER_FILE_EXT_WAV);
+        WAV_FILE = file.getAbsolutePath() + "/" + System.currentTimeMillis() + AUDIO_RECORDER_FILE_EXT_WAV;
+        return WAV_FILE;
     }
 
     public String getTmpFile() {
@@ -170,6 +172,12 @@ public class RecordBirdSound {
         File tmpFile = new File(filePath, AUDIO_RECORDER_TEMP_FILE);
         if (tmpFile.exists())
             tmpFile.delete();
+
+        try {
+            tmpFile.createNewFile();
+        } catch (IOException ex) {
+            Log.e(LOG_TAG, "Unable to create a tempfile: "+ex);
+        }
 
         return (file.getAbsolutePath() + "/" + AUDIO_RECORDER_TEMP_FILE);
     }
