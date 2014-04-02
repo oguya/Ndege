@@ -87,7 +87,6 @@ public class ViewTagsFrag extends Fragment {
     private AdapterView.OnItemClickListener listViewListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Toast.makeText(getActivity(), "item click: ", Toast.LENGTH_SHORT).show();
 
             //store tagID and birdID in bundle..start tagdetails activity
             Bundle bundle = new Bundle();

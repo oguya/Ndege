@@ -57,7 +57,7 @@ public class DBAdapter {
         Cursor cursor;
 
         try{
-            cursor = db.query(Constants.TBL_TAGS, cols, null, null, null, null, null);
+            cursor = db.query(Constants.TBL_TAGS, cols, null, null, null, null, Tag.TAG_DATE+" DESC");
         }catch (SQLiteException ex){
             Log.e(LOG_TAG, "exception "+ex.getMessage());
             return tagList;

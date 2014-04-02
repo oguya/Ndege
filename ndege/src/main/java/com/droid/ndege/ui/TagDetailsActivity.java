@@ -62,6 +62,7 @@ public class TagDetailsActivity extends ActionBarActivity {
     private TextView tagdetail_soundtype_TXT;
     private TextView tagdetail_tagdate;
     private TextView tagdetail_tagloc;
+    private String shareStr;
 
 
     @Override
@@ -117,6 +118,7 @@ public class TagDetailsActivity extends ActionBarActivity {
         String location = tagDetails.get(0).getLocation();
         String soundType = tagDetails.get(0).getSoundType();
         String tagDate = tagDetails.get(0).getTagDate();
+        String xenoURL = tagDetails.get(0).getXenoCantoURL();
 
         imageLoader.displayImage(imageURL, bird_img_thumbnail, displayImageOptions);
         bird_engName_TXT.setText(engName);
@@ -127,6 +129,8 @@ public class TagDetailsActivity extends ActionBarActivity {
         tagdetail_soundtype_TXT.setText(soundType);
         tagdetail_tagdate.setText(formatDate(tagDate));
 
+        shareStr = "I have just identified identified "+engName +
+                " using " + getString(R.string.app_name) + " app. More info: "+xenoURL;
     }
 
     public void initImageLoader(){
@@ -154,7 +158,7 @@ public class TagDetailsActivity extends ActionBarActivity {
         switch (view.getId()){
             case R.id.tagdetail_MoreInfo_BTN:
             	//TODO get xenoCantoURL from db
-                String xenoCantoURL = "http://xeno-canto.org/98676";
+                String xenoCantoURL = tagDetails.get(0).getXenoCantoURL();
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(xenoCantoURL));
                 startActivity(intent);
                 break;
@@ -177,11 +181,6 @@ public class TagDetailsActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.tagdetails, menu);
 
-        //shareAction provider
-        MenuItem shareItem = menu.findItem(R.id.action_share);
-        shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
-        shareActionProvider.setShareIntent(getDefaultShareIntent());
-
         return true;
     }
 
@@ -197,7 +196,7 @@ public class TagDetailsActivity extends ActionBarActivity {
                 break;
 
             case R.id.action_share:
-                Toast.makeText(this, "share...comming soon", Toast.LENGTH_SHORT).show();
+                startActivity(Intent.createChooser(getDefaultShareIntent(shareStr), "share"));
                 break;
 
             case R.id.action_delete:
@@ -239,9 +238,10 @@ public class TagDetailsActivity extends ActionBarActivity {
         outState.putInt(Constants.KEY_TAG_ID, TAG_ID);
     }
 
-    private Intent getDefaultShareIntent(){
-        Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-        intent.setType("image/*");
+    private Intent getDefaultShareIntent(String shareStr) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, shareStr);
+        intent.setType("text/plain");
         return intent;
     }
 
