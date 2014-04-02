@@ -24,7 +24,7 @@ public class Constants {
     public static final String KEY_TAG_ID = "TAG_ID";
 
     //net services & receivers
-    public static final String RECEIVER_FILTER = "com.droid.ndege.ui.TagDetailsActivity";
+    public static final String RECEIVER_FILTER = "com.droid.ndege.receivers.NetReceiver";
     public static final String KEY_FILEPATH = "filePath";
     public static final int RESULT_OK = 1;
     public static final int RESULT_FAILED = 0;
@@ -36,13 +36,16 @@ public class Constants {
     public static final int TAG_DB_ERROR = -100;
 
     //timer
-    public static final int RECORD_TIME_MILLIS = 20 * 1000; //10 sec
+    public static final int RECORD_TIME_MILLIS = 20 * 1000; //20 sec
     public static final int RECORD_TIME_INTERVAL_MILLIS = 1 * 1000; //1 sec
     public static final double VIBRATOR_TIME = 0.5 * 1000; // .5 sec
+    public static final String KEY_RECORDING_STATE = "RecordingState";
 
     //backend server url args
-    public static final String BG_SVR_URL_TAG_FILE = "http://127.0.0.1/";
-    public static final String BG_TAG_AUDIO_FILE = "audiofile";
-    public static final String BG_DEVICE_ID = "deviceid";
+//    public static final String BG_SVR_URL_TAG_FILE = "http://192.168.43.100:5000/match";
+    public static final String BG_SVR_URL_TAG_FILE = "http://192.168.43.100/droid/bsrs_sounds/bsrs_api.php";
+    public static final String BG_SVR_URL_GET_RESULT = "http://192.168.43.100:5000/match2/{query}";
+    public static final String BG_TAG_AUDIO_FILE = "wavFile";
+    public static final String BG_DEVICE_ID = "deviceID";
 
 }

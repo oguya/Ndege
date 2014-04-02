@@ -153,6 +153,7 @@ public class TagDetailsActivity extends ActionBarActivity {
     public void handleClickEvents(View view){
         switch (view.getId()){
             case R.id.tagdetail_MoreInfo_BTN:
+            	//TODO get xenoCantoURL from db
                 String xenoCantoURL = "http://xeno-canto.org/98676";
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(xenoCantoURL));
                 startActivity(intent);

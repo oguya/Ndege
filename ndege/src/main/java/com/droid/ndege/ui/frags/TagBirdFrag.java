@@ -71,7 +71,11 @@ public class TagBirdFrag extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+        setRetainInstance(false);
+
+        if(savedInstanceState != null){
+            RECORDING = savedInstanceState.getBoolean(Constants.KEY_RECORDING_STATE);
+        }
     }
 
     //change ui stuff..frag is live
@@ -104,6 +108,7 @@ public class TagBirdFrag extends Fragment {
         public void onClick(View view) {
             switch (view.getId()){
                 case R.id.tap_img:  //start recording, timer
+                    Log.e(LOG_TAG, "starting recorder!");
                     tag_results_txt.setVisibility(View.GONE);
                     tag_status_txt.setText(getString(R.string.tag_status_activated));
                     tag_image.setEnabled(false);
@@ -113,10 +118,6 @@ public class TagBirdFrag extends Fragment {
                         audioRecorder.startRecorder();
                         timer.start();
                     }
-
-
-
-//                    fireUpService("");
                     break;
 
                 default: break;
@@ -135,7 +136,6 @@ public class TagBirdFrag extends Fragment {
                 activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 break;
             default:
-                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
                 break;
         }
     }
@@ -144,17 +144,23 @@ public class TagBirdFrag extends Fragment {
     public void onResume(){
         super.onResume();
         activity.registerReceiver(bReceiver, new IntentFilter(Constants.RECEIVER_FILTER));
+        if(RECORDING){
+
+        }
+        Log.e(LOG_TAG, "At onResume()");
     }
 
     @Override
     public void onPause(){
         super.onPause();
         activity.unregisterReceiver(bReceiver);
+        Log.e(LOG_TAG, "At onPause()");
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
+        outState.putBoolean(Constants.KEY_RECORDING_STATE, RECORDING);
     }
 
     //set fonts
@@ -180,10 +186,16 @@ public class TagBirdFrag extends Fragment {
 
         public void startRecorder(){
             super.startRecording();
+            Log.e(LOG_TAG, "starting recorder");
         }
 
         public void stopRecorder(){
             super.stopRecording();
+            RECORDING = false;
+            tag_results_txt.setVisibility(View.GONE);
+            tag_status_txt.setText(getString(R.string.tag_status_default));
+            tag_image.setEnabled(true);
+            Log.e(LOG_TAG, "stopping recorder");
         }
     }
 

@@ -17,7 +17,6 @@ import com.droid.ndege.utils.FirstRunInit;
 import com.droid.ndege.utils.LocationUtils;
 import com.fasterxml.jackson.databind.deser.DataFormatReaders;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
@@ -29,10 +28,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.ContentCodingType;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
@@ -41,6 +48,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class NetOpsService extends IntentService {
 
@@ -64,13 +73,40 @@ public class NetOpsService extends IntentService {
         JSONObject jsonObject;
 
         try{
-            jsonObject = uploadTagFile(filePath, Constants.BG_SVR_URL_TAG_FILE);
+//            jsonObject = uploadTagFile(filePath, Constants.BG_SVR_URL_TAG_FILE);
+//            new UploadFile().uploadWavFile(filePath, new FirstRunInit(this).getDeviceID());
+            UploadFile uploader = new UploadFile();
+            int request_id = uploader.uploadFile(filePath, new FirstRunInit(this).getDeviceID(),
+                    Constants.BG_SVR_URL_TAG_FILE);
 
-            parseJSONResponse(jsonObject);
-        }catch (Exception ex){
+            if (request_id != -1){
+                Log.e(LOG_TAG, "Good data");
+//                String jsonStr = getMatchResults(Constants.BG_SVR_URL_GET_RESULT, request_id);
+                String jsonStr = getMatchResults(request_id);
+
+                //parse json
+            parseJSONResponse(new JSONObject(jsonStr));
+
+            }else{
+                Log.e(LOG_TAG, "NO Good data");
+                //net error
+                matchResult.setTagID(-1);
+                matchResult.setTagResults(Constants.TAG_NET_ERROR);
+            }
+        }catch (IOException ex){
             Log.e(LOG_TAG, "Unable to upload file: "+ex);
 
             //net error
+            matchResult.setTagID(-1);
+            matchResult.setTagResults(Constants.TAG_NET_ERROR);
+        }catch (HttpServerErrorException ex){
+            Log.e(LOG_TAG, "Unable to get json from flask: "+ex);
+            //net error
+            matchResult.setTagID(-1);
+            matchResult.setTagResults(Constants.TAG_NET_ERROR);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e(LOG_TAG, "Unable to parse json response: "+e);
             matchResult.setTagID(-1);
             matchResult.setTagResults(Constants.TAG_NET_ERROR);
         }
@@ -91,9 +127,31 @@ public class NetOpsService extends IntentService {
         RestTemplate restTemplate = new RestTemplate();
 
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-        jsonObject = restTemplate.getForObject(svrURL, JSONObject.class, args);
+        restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+//        jsonObject = restTemplate.getForObject(svrURL, JSONObject.class, args);
+//        jsonObject = restTemplate.postForEntity(svrURL, args, String.class, args);
 
-        return jsonObject;
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.setAcceptEncoding(ContentCodingType.IDENTITY);
+        requestHeaders.setAcceptEncoding(ContentCodingType.GZIP); // Add the gzip Accept-Encoding header
+        requestHeaders.setAcceptEncoding(ContentCodingType.ALL);
+        requestHeaders.setAccept(Collections.singletonList(new MediaType("application", "json")));
+//        requestHeaders.setContentType(new MediaType("multipart", "form-data"));
+        HttpEntity<Object> requestEntity = new HttpEntity<Object>(requestHeaders);
+        ResponseEntity<String> response = restTemplate.postForEntity(svrURL, requestEntity, String.class, args);
+//        ResponseEntity<String> response =restTemplate.exchange(svrURL, HttpMethod.POST, requestEntity, String.class, args);
+        Log.e(LOG_TAG,"response:: "+response.getBody());
+        return null;
+    }
+
+    //get match results
+    public String getMatchResults(String svrURL, int request_id){
+
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+        String jsonStr = restTemplate.getForObject(svrURL, String.class, request_id);
+        Log.e(LOG_TAG, "Got response: "+jsonStr);
+        return jsonStr;
     }
 
     //publish results using broadcast receivers
@@ -142,7 +200,7 @@ public class NetOpsService extends IntentService {
 
                 tagID = (int) dbAdapter.addTag(tag);
 
-                JSONArray images = jsonObject.getJSONArray(jsonObject.getString(BirdImage.IMAGES_LBL));
+                JSONArray images = jsonObject.getJSONArray(BirdImage.IMAGES_LBL);
                 addImages(images, tagID);
                 break;
 
@@ -177,8 +235,8 @@ public class NetOpsService extends IntentService {
         dbAdapter.addImages(birdImages);
     }
 
-    public String connect2Net() {
-        String jsonURL = "";
+    public String getMatchResults(int requestID) {
+        String jsonURL = Constants.BG_SVR_URL_GET_RESULT.replace("{query}", String.valueOf(requestID));
         StringBuilder builder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(jsonURL);
@@ -189,13 +247,14 @@ public class NetOpsService extends IntentService {
             int statusCode = statusLine.getStatusCode();
 
             if(statusCode == 200){
-                HttpEntity entity = response.getEntity();
+                org.apache.http.HttpEntity entity = response.getEntity();
                 InputStream content = entity.getContent();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(content));
                 String line;
                 while( (line = reader.readLine())!= null ){
                     builder.append(line);
                 }
+                Log.e(LOG_TAG, "Got response: "+builder.toString());
             }else{
                 Log.i(LOG_TAG,"Failed to dl json file! Server Response: "+statusCode);
             }

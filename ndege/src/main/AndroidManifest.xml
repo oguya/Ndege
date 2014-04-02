@@ -17,7 +17,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".ui.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -53,6 +54,16 @@
             android:process="@string/svc_netops_proc"
             android:enabled="true"
             android:exported="true"/>
+
+        <!--receiver-->
+        <!--<receiver-->
+            <!--android:name=".receivers.NetReceiver"-->
+            <!--android:exported="true"-->
+            <!--android:enabled="true">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.droid.ndege.receivers.NetReceiver"/>-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
 
     </application>
 

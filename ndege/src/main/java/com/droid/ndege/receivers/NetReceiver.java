@@ -57,7 +57,7 @@ public class NetReceiver extends BroadcastReceiver {
 
                     Intent tagDetails = new Intent(context, TagDetailsActivity.class);
                     tagDetails.putExtras(data);
-//                    context.startActivity(intent);
+                    context.startActivity(tagDetails);
                 }
                 break;
 

@@ -161,7 +161,6 @@ public class DBAdapter {
         long tagID = 0;
 
         ContentValues values = new ContentValues();
-        values.put(Tag.TAG_ID, tag.getTagID());
         values.put(Tag.BIRD_ID, tag.getBirdID());
         values.put(Tag.ENGLISH_NAME, tag.getEnglishName());
         values.put(Tag.GENERIC_NAME, tag.getGenericName());
@@ -202,13 +201,14 @@ public class DBAdapter {
 
         for(BirdImage birdImage : birdImages){
             ContentValues values = new ContentValues();
-            values.put(BirdImage.IMAGE_ID, birdImage.getImageID());
             values.put(BirdImage.TAG_ID, birdImage.getTagID());
             values.put(BirdImage.IMAGE_URL, birdImage.getImageURL());
             values.put(BirdImage.SITE_URL, birdImage.getSiteURL());
 
+            db.beginTransaction();
             try{
                 db.insert(Constants.TBL_IMAGES, null, values);
+                db.setTransactionSuccessful();
             }catch (SQLiteException ex){
                 db.endTransaction();
                 Log.e(LOG_TAG, "exception "+ex.getMessage());
