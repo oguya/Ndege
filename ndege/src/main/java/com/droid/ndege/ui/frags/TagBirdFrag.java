@@ -114,7 +114,7 @@ public class TagBirdFrag extends Fragment {
                     tag_image.setEnabled(false);
                     if(!RECORDING){
                         RECORDING = true;
-                        lockOrientation();
+                        lockOrientation(true);
                         audioRecorder.startRecorder();
                         timer.start();
                     }
@@ -125,9 +125,12 @@ public class TagBirdFrag extends Fragment {
         }
     };
 
-    public void lockOrientation(){
+    public void lockOrientation(boolean lock){
+        if(!lock){
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+            return;
+        }
         int orientation = activity.getResources().getConfiguration().orientation;
-
         switch (orientation){
             case ActivityInfo.SCREEN_ORIENTATION_PORTRAIT:
                 activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -193,8 +196,9 @@ public class TagBirdFrag extends Fragment {
             super.stopRecording();
             RECORDING = false;
             tag_results_txt.setVisibility(View.GONE);
-            tag_status_txt.setText(getString(R.string.tag_status_default));
-            tag_image.setEnabled(true);
+            tag_status_txt.setText(getString(R.string.tag_status_matching));
+            tag_image.setEnabled(false);
+            lockOrientation(false);
             Log.e(LOG_TAG, "stopping recorder");
         }
     }
