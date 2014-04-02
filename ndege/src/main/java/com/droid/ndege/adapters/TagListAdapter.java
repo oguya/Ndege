@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,6 +27,7 @@ public class TagListAdapter extends ArrayAdapter<Tag> {
     private Activity context;
     private ArrayList<Tag> tagList;
     public com.droid.ndege.lazylist.ImageLoader imageLoader;
+    private int lastPosition = -1;
 
     private static class ViewHolder{
         ImageView birdImg;
@@ -74,7 +77,10 @@ public class TagListAdapter extends ArrayAdapter<Tag> {
         viewHolder.tagDate_TXT.setText(formatDate(tagDate));
 
         //TODO add list scroll animation
-
+        Animation animation = AnimationUtils.loadAnimation(this.context, (position > lastPosition) ?
+                R.anim.up_from_bottom : R.anim.down_from_top);
+        rowView.startAnimation(animation);
+        lastPosition = position;
         return rowView;
     }
 
